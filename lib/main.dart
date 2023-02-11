@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:isar/isar.dart';
-import 'package:teacher_pro/models/grade.dart';
-import 'package:teacher_pro/models/lesson.dart';
-import 'package:teacher_pro/models/student.dart';
+import 'package:teacher_pro/services/entities/grade.dart';
+import 'package:teacher_pro/services/entities/lesson.dart';
+import 'package:teacher_pro/services/entities/student.dart';
 
-import 'widgets/home_screen.dart';
+import 'ui/pages/home_screen.dart';
 
 Future<void> main() async {
   runApp(const MyApp());
@@ -13,16 +13,17 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+  static const _title = 'Teacher Helper';
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: _title,
       theme: ThemeData(
         primarySwatch: Colors.deepPurple,
       ),
-      home: const HomeScreen(),
-      //home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const HomePagex(title: _title),
+      //home: const MyHomePage(title: _title),
     );
   }
 }

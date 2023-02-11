@@ -1,6 +1,5 @@
 import 'package:isar/isar.dart';
-import 'package:teacher_pro/models/lesson.dart';
-
+import 'lesson.dart';
 import 'grade.dart';
 
 part 'student.g.dart';
