@@ -4,7 +4,7 @@ import 'package:teacher_pro/ui/widgets/add_widget.dart';
 import 'package:teacher_pro/ui/widgets/list_of_grades_widget.dart';
 import 'package:teacher_pro/ui/widgets/text_field_widget.dart';
 
-import '../widgets/list_of_lessons_widget.dart';
+import 'package:teacher_pro/ui/widgets/list_of_lessons_widget.dart';
 import '../widgets/list_of_students_widget.dart';
 
 //It will be in main.dart
