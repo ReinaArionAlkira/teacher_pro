@@ -3,8 +3,7 @@ import 'package:isar/isar.dart';
 import 'package:teacher_pro/services/entities/grade.dart';
 import 'package:teacher_pro/services/entities/lesson.dart';
 import 'package:teacher_pro/services/entities/student.dart';
-
-import 'ui/pages/home_screen.dart';
+import 'package:teacher_pro/ui/pages/home_screen.dart';
 
 Future<void> main() async {
   runApp(const MyApp());
