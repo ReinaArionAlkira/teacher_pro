@@ -5,13 +5,55 @@ import '../../services/entities/lesson.dart';
 import '../../services/entities/student.dart';
 
 // https://medium.com/geekculture/isar-database-how-to-use-it-with-flutter-todo-app-978a2d7c85dd
-class IsarUsing {
-  //final isar = await Isar.open([GradeSchema, StudentSchema, LessonSchema]);
+class IsarService {
+  late Future<Isar> data;
 
-  Future<void> createAndShow(student) async {
-    final isar = await Isar.open([GradeSchema, StudentSchema, LessonSchema]);
-    await isar.writeTxn(() async {
-      await isar.students.put(student);
-    });
+  IsarService() {
+    data = openIsar();
+  }
+
+  Future<Isar> openIsar() async {
+    if (Isar.instanceNames.isEmpty) {
+      return await Isar.open(
+        [GradeSchema, StudentSchema, LessonSchema],
+        inspector: true,
+      );
+    }
+    return Future.value(Isar.getInstance());
+  }
+
+  Future<void> createGrade(Grade newGrade) async {
+    final isar = await data;
+    isar.writeTxnSync<int>(() => isar.grades.putSync(newGrade));
+  }
+
+  Future<void> createStudent(Student newStudent) async {
+    final isar = await data;
+    isar.writeTxnSync<int>(() => isar.students.putSync(newStudent));
+  }
+
+  Future<void> createLesson(Lesson newLesson) async {
+    final isar = await data;
+    isar.writeTxnSync<int>(() => isar.lessons.putSync(newLesson));
+  }
+
+  Stream<List<Grade>> getAllGrades() async* {
+    final isar = await data;
+    yield* isar.grades.where().watch(fireImmediately: true);
+  }
+
+  Stream<List<Student>> getAllStudents(studentsId) async* {
+    final isar = await data;
+    yield* isar.students.where().watch(fireImmediately: true);
+  }
+
+  Stream<List<Lesson>> getAllLessons() async* {
+    final isar = await data;
+    yield* isar.lessons.where().watch(fireImmediately: true);
+  }
+
+  Future<void> cleanDataBase() async {
+    final isar = await data;
+    await isar.writeTxn(() => isar.clear());
   }
 }

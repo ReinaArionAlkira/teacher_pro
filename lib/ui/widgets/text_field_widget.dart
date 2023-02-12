@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:teacher_pro/services/isar_service.dart';
 
 class TextFieldWidget extends StatelessWidget {
-  TextFieldWidget({required this.text, this.type, super.key});
+  TextFieldWidget(
+      {required this.isarService, required this.text, this.type, super.key});
 
+  final IsarService isarService;
   final TextInputType? type;
 
   final String text;
