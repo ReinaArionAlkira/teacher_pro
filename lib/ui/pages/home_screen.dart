@@ -4,6 +4,9 @@ import 'package:teacher_pro/ui/widgets/add_widget.dart';
 import 'package:teacher_pro/ui/widgets/list_of_grades_widget.dart';
 import 'package:teacher_pro/ui/widgets/text_field_widget.dart';
 
+import '../widgets/list_of_lessons_widget.dart';
+import '../widgets/list_of_students_widget.dart';
+
 //It will be in main.dart
 class HomePagex extends StatelessWidget {
   const HomePagex({required this.title, super.key});
@@ -80,8 +83,8 @@ class _HomePageState extends State<HomePage> {
 
   static final List<Widget> _widgetOptions = <Widget>[
     ListOfGradesWidget(isarService: isarService),
-    AddWidget(isarService: isarService, formFields: formFieldsStudent),
-    AddWidget(isarService: isarService, formFields: formFieldsLesson),
+    ListOfStudentsWidget(isarService: isarService),
+    ListOfLessonsWidget(isarService: isarService),
   ];
 
   void _onItemTapped(int index) {

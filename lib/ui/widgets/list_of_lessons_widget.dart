@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-import '../../services/entities/grade.dart';
+import '../../services/entities/lesson.dart';
 
-class ListOfGradesWidget extends StatelessWidget {
-  ListOfGradesWidget({required this.isarService, super.key});
+class ListOfLessonsWidget extends StatelessWidget {
+  ListOfLessonsWidget({required this.isarService, super.key});
 
   final isarService;
 
@@ -11,17 +11,17 @@ class ListOfGradesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<Grade>>(
-        stream: isarService.getAllGrades(),
+    return StreamBuilder<List<Lesson>>(
+        stream: isarService.getAllLessons(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            final grades = snapshot.data;
-            if (grades!.isEmpty) {
+            final lessons = snapshot.data;
+            if (lessons!.isEmpty) {
               return const Card(
                 margin: EdgeInsets.only(top: 10.0),
                 child: Text(
                   textAlign: TextAlign.center,
-                  'No grades found',
+                  'No lessons found',
                   style: TextStyle(
                     fontSize: 20,
                   ),
@@ -32,13 +32,13 @@ class ListOfGradesWidget extends StatelessWidget {
               child: ListView.builder(
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
-                itemCount: grades.length,
+                itemCount: lessons.length,
                 itemBuilder: (context, index) {
                   return Card(
                     child: ListTile(
-                      title: Text(grades[index].grade.toString()),
+                      title: Text(lessons[index].name!),
                       // subtitle:
-                      //     Text(grades[index].student.registerNo as String),
+                      //     Text(lessons[index].student.registerNo as String),
                       trailing: IconButton(
                         icon: const Icon(Icons.delete),
                         onPressed: () {},

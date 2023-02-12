@@ -42,7 +42,7 @@ class IsarService {
     yield* isar.grades.where().watch(fireImmediately: true);
   }
 
-  Stream<List<Student>> getAllStudents(studentsId) async* {
+  Stream<List<Student>> getAllStudents() async* {
     final isar = await data;
     yield* isar.students.where().watch(fireImmediately: true);
   }
