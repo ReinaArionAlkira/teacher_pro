@@ -1,35 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:teacher_pro/services/isar_service.dart';
-import 'package:teacher_pro/ui/widgets/add_widget.dart';
 import 'package:teacher_pro/ui/widgets/list_of_grades_widget.dart';
-import 'package:teacher_pro/ui/widgets/text_field_widget.dart';
-
 import 'package:teacher_pro/ui/widgets/list_of_lessons_widget.dart';
-import '../widgets/list_of_students_widget.dart';
-
-//It will be in main.dart
-class HomePagex extends StatelessWidget {
-  const HomePagex({required this.title, super.key});
-
-  final String title;
-
-  @override
-  Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        //         appBar: AppBar(
-        //   title: Text(widget.title),
-        // ),
-        appBar: AppBar(
-          elevation: 0.0,
-          title: Text(title),
-        ),
-        body: const HomePage(),
-      ),
-    );
-  }
-}
+import 'package:teacher_pro/ui/widgets/list_of_students_widget.dart';
+import 'package:teacher_pro/ui/widgets/add_student_widget.dart';
+import 'package:teacher_pro/ui/widgets/add_grade_widget.dart';
+import 'package:teacher_pro/ui/widgets/add_lesson_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -42,43 +18,11 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
   static final isarService = IsarService();
-  static List<TextFieldWidget> formFieldsGrade = [
-    TextFieldWidget(
-        isarService: isarService,
-        text: 'Grade',
-        type: const TextInputType.numberWithOptions()),
-    //TODO: dropdown list
-    //https://api.flutter.dev/flutter/material/DropdownButton-class.html
-    TextFieldWidget(isarService: isarService, text: 'Lesson'),
-    //TODO: dropdown list of students from lesson
-    TextFieldWidget(isarService: isarService, text: 'Name'),
-    TextFieldWidget(isarService: isarService, text: 'Surrname'),
-    TextFieldWidget(
-        isarService: isarService,
-        text: 'Register Number',
-        type: TextInputType.number),
-  ];
 
-  static List<TextFieldWidget> formFieldsStudent = [
-    TextFieldWidget(isarService: isarService, text: 'Name'),
-    TextFieldWidget(isarService: isarService, text: 'Surrname'),
-    TextFieldWidget(
-        isarService: isarService,
-        text: 'Register Number',
-        type: TextInputType.number),
-  ];
-
-  static List<TextFieldWidget> formFieldsLesson = [
-    TextFieldWidget(isarService: isarService, text: 'Name'),
-    //TODO: list to fast adding existing students
-    //https://medium.flutterdevs.com/selecting-multiple-item-in-list-in-flutter-811a3049c56f
-  ];
-
-  // ignore: prefer_final_fields
-  static List<Widget> _dialogOptions = <Widget>[
-    AddWidget(isarService: isarService, formFields: formFieldsGrade),
-    AddWidget(isarService: isarService, formFields: formFieldsStudent),
-    AddWidget(isarService: isarService, formFields: formFieldsLesson),
+  static final List<Widget> _dialogOptions = <Widget>[
+    AddGradeWidget(isarService: isarService),
+    AddStudentWidget(isarService: isarService),
+    AddLessonWidget(isarService: isarService),
   ];
 
   static final List<Widget> _widgetOptions = <Widget>[
@@ -117,15 +61,13 @@ class _HomePageState extends State<HomePage> {
       resizeToAvoidBottomInset: false,
       body: Column(children: [
         Padding(
-          padding: const EdgeInsets.fromLTRB(8.0, 8.0, 18.0, 0),
+          padding: const EdgeInsets.all(8.0),
           child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               mainAxisSize: MainAxisSize.max,
               children: [
-                SizedBox(
-                  width: MediaQuery.of(context).size.width * 0.70,
-                  height: 40,
-                  child: const TextField(
+                const Expanded(
+                  child: TextField(
                       style: TextStyle(fontSize: 20),
                       textAlign: TextAlign.justify,
                       maxLines: 1,

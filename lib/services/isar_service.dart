@@ -37,21 +37,25 @@ class IsarService {
     isar.writeTxnSync<int>(() => isar.lessons.putSync(newLesson));
   }
 
+//TODO: for one student
   Stream<List<Grade>> getAllGrades() async* {
     final isar = await data;
     yield* isar.grades.where().watch(fireImmediately: true);
   }
 
+//TODO: from one lesson
   Stream<List<Student>> getAllStudents() async* {
     final isar = await data;
     yield* isar.students.where().watch(fireImmediately: true);
   }
 
+//TODO: for one student
   Stream<List<Lesson>> getAllLessons() async* {
     final isar = await data;
     yield* isar.lessons.where().watch(fireImmediately: true);
   }
 
+//TODO: for one object
   Future<void> cleanDataBase() async {
     final isar = await data;
     await isar.writeTxn(() => isar.clear());
