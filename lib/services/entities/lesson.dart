@@ -12,7 +12,13 @@ class Lesson {
 
   String? day;
 
-  String? hours;
+  // Przechowuję fromTime oraz toTime jako minuty danego dnia.
+  // 0 -> 00:00
+  // 75 -> 01:15
+  // 1439 -> 23:59
+  int? fromTime;
+
+  int? toTime;
 
   final grades = IsarLinks<Grade>();
 

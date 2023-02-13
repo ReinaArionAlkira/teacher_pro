@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
 import '../../services/entities/grade.dart';
+import '../../services/isar_service.dart';
 
 class ListOfGradesWidget extends StatelessWidget {
   ListOfGradesWidget({required this.isarService, super.key});
 
-  final isarService;
+  final IsarService isarService;
 
   final List options = [];
 
@@ -49,7 +50,11 @@ class ListOfGradesWidget extends StatelessWidget {
               ),
             );
           } else {
-            return const Center(child: CircularProgressIndicator());
+            return Expanded(
+                child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [CircularProgressIndicator()],
+            ));
           }
         });
   }

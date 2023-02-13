@@ -20,9 +20,9 @@ class _HomePageState extends State<HomePage> {
   static final isarService = IsarService();
 
   static final List<Widget> _dialogOptions = <Widget>[
-    AddGradeWidget(isarService: isarService),
-    AddStudentWidget(isarService: isarService),
-    AddLessonWidget(isarService: isarService),
+    const AddGradeWidget(),
+    const AddStudentWidget(),
+    const AddLessonWidget(),
   ];
 
   static final List<Widget> _widgetOptions = <Widget>[
@@ -39,16 +39,8 @@ class _HomePageState extends State<HomePage> {
 
   Future openDialog(Widget element) => showDialog(
         context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('Add'),
-          content: element,
-          // actions: [
-          //   TextButton(
-          //     child: const Text('Submit'),
-          //     onPressed: () => submit(),
-          //   )
-          // ],
-        ),
+        builder: (context) =>
+            AlertDialog(title: const Text('Add'), content: element),
       );
 
   void submit() {

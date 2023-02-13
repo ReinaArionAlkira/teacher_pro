@@ -29,7 +29,20 @@ const GradeSchema = CollectionSchema(
   deserializeProp: _gradeDeserializeProp,
   idName: r'id',
   indexes: {},
-  links: {},
+  links: {
+    r'student': LinkSchema(
+      id: 6655192037350000626,
+      name: r'student',
+      target: r'Student',
+      single: true,
+    ),
+    r'lesson': LinkSchema(
+      id: 4466730712097646747,
+      name: r'lesson',
+      target: r'Lesson',
+      single: true,
+    )
+  },
   embeddedSchemas: {},
   getId: _gradeGetId,
   getLinks: _gradeGetLinks,
@@ -86,11 +99,13 @@ Id _gradeGetId(Grade object) {
 }
 
 List<IsarLinkBase<dynamic>> _gradeGetLinks(Grade object) {
-  return [];
+  return [object.student, object.lesson];
 }
 
 void _gradeAttach(IsarCollection<dynamic> col, Id id, Grade object) {
   object.id = id;
+  object.student.attach(col, col.isar.collection<Student>(), r'student', id);
+  object.lesson.attach(col, col.isar.collection<Lesson>(), r'lesson', id);
 }
 
 extension GradeQueryWhereSort on QueryBuilder<Grade, Grade, QWhere> {
@@ -302,7 +317,33 @@ extension GradeQueryFilter on QueryBuilder<Grade, Grade, QFilterCondition> {
 
 extension GradeQueryObject on QueryBuilder<Grade, Grade, QFilterCondition> {}
 
-extension GradeQueryLinks on QueryBuilder<Grade, Grade, QFilterCondition> {}
+extension GradeQueryLinks on QueryBuilder<Grade, Grade, QFilterCondition> {
+  QueryBuilder<Grade, Grade, QAfterFilterCondition> student(
+      FilterQuery<Student> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'student');
+    });
+  }
+
+  QueryBuilder<Grade, Grade, QAfterFilterCondition> studentIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'student', 0, true, 0, true);
+    });
+  }
+
+  QueryBuilder<Grade, Grade, QAfterFilterCondition> lesson(
+      FilterQuery<Lesson> q) {
+    return QueryBuilder.apply(this, (query) {
+      return query.link(q, r'lesson');
+    });
+  }
+
+  QueryBuilder<Grade, Grade, QAfterFilterCondition> lessonIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.linkLength(r'lesson', 0, true, 0, true);
+    });
+  }
+}
 
 extension GradeQuerySortBy on QueryBuilder<Grade, Grade, QSortBy> {
   QueryBuilder<Grade, Grade, QAfterSortBy> sortByGrade() {

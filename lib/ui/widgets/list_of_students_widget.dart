@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:teacher_pro/services/isar_service.dart';
 
 import '../../services/entities/student.dart';
 
 class ListOfStudentsWidget extends StatelessWidget {
   ListOfStudentsWidget({required this.isarService, super.key});
 
-  final isarService;
+  final IsarService isarService;
 
   final List options = [];
 
@@ -42,7 +43,9 @@ class ListOfStudentsWidget extends StatelessWidget {
                       //     Text(students[index].student.registerNo as String),
                       trailing: IconButton(
                         icon: const Icon(Icons.delete),
-                        onPressed: () {},
+                        onPressed: () {
+                          isarService.deleteStudent(students[index].registerNo);
+                        },
                       ),
                     ),
                   );
@@ -50,7 +53,11 @@ class ListOfStudentsWidget extends StatelessWidget {
               ),
             );
           } else {
-            return const Center(child: CircularProgressIndicator());
+            return Expanded(
+                child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [CircularProgressIndicator()],
+            ));
           }
         });
   }

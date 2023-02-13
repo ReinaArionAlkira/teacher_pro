@@ -38,6 +38,7 @@ dependencies:
   isar: ^3.0.5
   isar_flutter_libs: ^3.0.5
   logger: ^1.1.0
+  time_range_picker: ^2.2.0
 
 dev_dependencies:
   flutter_test:

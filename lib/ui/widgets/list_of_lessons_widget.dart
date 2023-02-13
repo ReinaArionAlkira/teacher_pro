@@ -49,7 +49,11 @@ class ListOfLessonsWidget extends StatelessWidget {
               ),
             );
           } else {
-            return const Center(child: CircularProgressIndicator());
+            return Expanded(
+                child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: const [CircularProgressIndicator()],
+            ));
           }
         });
   }

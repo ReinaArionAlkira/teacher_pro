@@ -24,11 +24,12 @@ import 'package:teacher_pro/services/isar_service.dart';
 // }
 
 class AddWidget extends StatelessWidget {
-  AddWidget({required this.isarService, required this.formFields, super.key});
+  AddWidget({required this.formFields, this.onSubmit, super.key});
 
-  final IsarService isarService;
-  final List<TextFieldWidget> formFields;
+  final IsarService isarService = IsarService();
+  final List<Widget> formFields;
   final _formKey = GlobalKey<FormState>();
+  final Function? onSubmit;
 
   @override
   Widget build(BuildContext context) {
@@ -47,11 +48,15 @@ class AddWidget extends StatelessWidget {
               onPressed: () {
                 // Validate returns true if the form is valid, or false otherwise.
                 if (_formKey.currentState!.validate()) {
+                  _formKey.currentState!.save();
                   // If the form is valid, display a snackbar. In the real world,
                   // you'd often call a server or save the information in a database.
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('Processing Data')),
-                  );
+                  // ScaffoldMessenger.of(context).showSnackBar(
+                  //   const SnackBar(content: Text('Processing Data')),
+                  // );
+                  if (onSubmit != null) {
+                    onSubmit!();
+                  }
                   Navigator.of(context).pop();
                 }
               },

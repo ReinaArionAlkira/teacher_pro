@@ -3,14 +3,14 @@ import 'package:flutter/services.dart';
 import 'package:teacher_pro/services/isar_service.dart';
 
 class TextFieldWidget extends StatelessWidget {
-  TextFieldWidget(
-      {required this.isarService, required this.text, this.type, super.key});
+  TextFieldWidget({required this.text, this.type, this.onSaved, super.key});
 
-  final IsarService isarService;
+  final IsarService isarService = IsarService();
   final TextInputType? type;
 
   final String text;
   final controller = TextEditingController();
+  final Function(String?)? onSaved;
 
   @override
   Widget build(BuildContext context) {
@@ -19,6 +19,7 @@ class TextFieldWidget extends StatelessWidget {
       formater = FilteringTextInputFormatter.digitsOnly;
     }
     return TextFormField(
+      onSaved: onSaved,
       keyboardType: type,
       inputFormatters: [formater],
       validator: (value) {

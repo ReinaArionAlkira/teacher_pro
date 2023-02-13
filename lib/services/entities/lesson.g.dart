@@ -22,15 +22,20 @@ const LessonSchema = CollectionSchema(
       name: r'day',
       type: IsarType.string,
     ),
-    r'hours': PropertySchema(
+    r'fromTime': PropertySchema(
       id: 1,
-      name: r'hours',
-      type: IsarType.string,
+      name: r'fromTime',
+      type: IsarType.long,
     ),
     r'name': PropertySchema(
       id: 2,
       name: r'name',
       type: IsarType.string,
+    ),
+    r'toTime': PropertySchema(
+      id: 3,
+      name: r'toTime',
+      type: IsarType.long,
     )
   },
   estimateSize: _lessonEstimateSize,
@@ -73,12 +78,6 @@ int _lessonEstimateSize(
     }
   }
   {
-    final value = object.hours;
-    if (value != null) {
-      bytesCount += 3 + value.length * 3;
-    }
-  }
-  {
     final value = object.name;
     if (value != null) {
       bytesCount += 3 + value.length * 3;
@@ -94,8 +93,9 @@ void _lessonSerialize(
   Map<Type, List<int>> allOffsets,
 ) {
   writer.writeString(offsets[0], object.day);
-  writer.writeString(offsets[1], object.hours);
+  writer.writeLong(offsets[1], object.fromTime);
   writer.writeString(offsets[2], object.name);
+  writer.writeLong(offsets[3], object.toTime);
 }
 
 Lesson _lessonDeserialize(
@@ -106,9 +106,10 @@ Lesson _lessonDeserialize(
 ) {
   final object = Lesson();
   object.day = reader.readStringOrNull(offsets[0]);
-  object.hours = reader.readStringOrNull(offsets[1]);
+  object.fromTime = reader.readLongOrNull(offsets[1]);
   object.id = id;
   object.name = reader.readStringOrNull(offsets[2]);
+  object.toTime = reader.readLongOrNull(offsets[3]);
   return object;
 }
 
@@ -122,9 +123,11 @@ P _lessonDeserializeProp<P>(
     case 0:
       return (reader.readStringOrNull(offset)) as P;
     case 1:
-      return (reader.readStringOrNull(offset)) as P;
+      return (reader.readLongOrNull(offset)) as P;
     case 2:
       return (reader.readStringOrNull(offset)) as P;
+    case 3:
+      return (reader.readLongOrNull(offset)) as P;
     default:
       throw IsarError('Unknown property with id $propertyId');
   }
@@ -364,148 +367,71 @@ extension LessonQueryFilter on QueryBuilder<Lesson, Lesson, QFilterCondition> {
     });
   }
 
-  QueryBuilder<Lesson, Lesson, QAfterFilterCondition> hoursIsNull() {
+  QueryBuilder<Lesson, Lesson, QAfterFilterCondition> fromTimeIsNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNull(
-        property: r'hours',
+        property: r'fromTime',
       ));
     });
   }
 
-  QueryBuilder<Lesson, Lesson, QAfterFilterCondition> hoursIsNotNull() {
+  QueryBuilder<Lesson, Lesson, QAfterFilterCondition> fromTimeIsNotNull() {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(const FilterCondition.isNotNull(
-        property: r'hours',
+        property: r'fromTime',
       ));
     });
   }
 
-  QueryBuilder<Lesson, Lesson, QAfterFilterCondition> hoursEqualTo(
-    String? value, {
-    bool caseSensitive = true,
-  }) {
+  QueryBuilder<Lesson, Lesson, QAfterFilterCondition> fromTimeEqualTo(
+      int? value) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'hours',
+        property: r'fromTime',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Lesson, Lesson, QAfterFilterCondition> hoursGreaterThan(
-    String? value, {
+  QueryBuilder<Lesson, Lesson, QAfterFilterCondition> fromTimeGreaterThan(
+    int? value, {
     bool include = false,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.greaterThan(
         include: include,
-        property: r'hours',
+        property: r'fromTime',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Lesson, Lesson, QAfterFilterCondition> hoursLessThan(
-    String? value, {
+  QueryBuilder<Lesson, Lesson, QAfterFilterCondition> fromTimeLessThan(
+    int? value, {
     bool include = false,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.lessThan(
         include: include,
-        property: r'hours',
+        property: r'fromTime',
         value: value,
-        caseSensitive: caseSensitive,
       ));
     });
   }
 
-  QueryBuilder<Lesson, Lesson, QAfterFilterCondition> hoursBetween(
-    String? lower,
-    String? upper, {
+  QueryBuilder<Lesson, Lesson, QAfterFilterCondition> fromTimeBetween(
+    int? lower,
+    int? upper, {
     bool includeLower = true,
     bool includeUpper = true,
-    bool caseSensitive = true,
   }) {
     return QueryBuilder.apply(this, (query) {
       return query.addFilterCondition(FilterCondition.between(
-        property: r'hours',
+        property: r'fromTime',
         lower: lower,
         includeLower: includeLower,
         upper: upper,
         includeUpper: includeUpper,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Lesson, Lesson, QAfterFilterCondition> hoursStartsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.startsWith(
-        property: r'hours',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Lesson, Lesson, QAfterFilterCondition> hoursEndsWith(
-    String value, {
-    bool caseSensitive = true,
-  }) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.endsWith(
-        property: r'hours',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Lesson, Lesson, QAfterFilterCondition> hoursContains(
-      String value,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.contains(
-        property: r'hours',
-        value: value,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Lesson, Lesson, QAfterFilterCondition> hoursMatches(
-      String pattern,
-      {bool caseSensitive = true}) {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.matches(
-        property: r'hours',
-        wildcard: pattern,
-        caseSensitive: caseSensitive,
-      ));
-    });
-  }
-
-  QueryBuilder<Lesson, Lesson, QAfterFilterCondition> hoursIsEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.equalTo(
-        property: r'hours',
-        value: '',
-      ));
-    });
-  }
-
-  QueryBuilder<Lesson, Lesson, QAfterFilterCondition> hoursIsNotEmpty() {
-    return QueryBuilder.apply(this, (query) {
-      return query.addFilterCondition(FilterCondition.greaterThan(
-        property: r'hours',
-        value: '',
       ));
     });
   }
@@ -706,6 +632,75 @@ extension LessonQueryFilter on QueryBuilder<Lesson, Lesson, QFilterCondition> {
       ));
     });
   }
+
+  QueryBuilder<Lesson, Lesson, QAfterFilterCondition> toTimeIsNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNull(
+        property: r'toTime',
+      ));
+    });
+  }
+
+  QueryBuilder<Lesson, Lesson, QAfterFilterCondition> toTimeIsNotNull() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(const FilterCondition.isNotNull(
+        property: r'toTime',
+      ));
+    });
+  }
+
+  QueryBuilder<Lesson, Lesson, QAfterFilterCondition> toTimeEqualTo(
+      int? value) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.equalTo(
+        property: r'toTime',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Lesson, Lesson, QAfterFilterCondition> toTimeGreaterThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.greaterThan(
+        include: include,
+        property: r'toTime',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Lesson, Lesson, QAfterFilterCondition> toTimeLessThan(
+    int? value, {
+    bool include = false,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.lessThan(
+        include: include,
+        property: r'toTime',
+        value: value,
+      ));
+    });
+  }
+
+  QueryBuilder<Lesson, Lesson, QAfterFilterCondition> toTimeBetween(
+    int? lower,
+    int? upper, {
+    bool includeLower = true,
+    bool includeUpper = true,
+  }) {
+    return QueryBuilder.apply(this, (query) {
+      return query.addFilterCondition(FilterCondition.between(
+        property: r'toTime',
+        lower: lower,
+        includeLower: includeLower,
+        upper: upper,
+        includeUpper: includeUpper,
+      ));
+    });
+  }
 }
 
 extension LessonQueryObject on QueryBuilder<Lesson, Lesson, QFilterCondition> {}
@@ -837,15 +832,15 @@ extension LessonQuerySortBy on QueryBuilder<Lesson, Lesson, QSortBy> {
     });
   }
 
-  QueryBuilder<Lesson, Lesson, QAfterSortBy> sortByHours() {
+  QueryBuilder<Lesson, Lesson, QAfterSortBy> sortByFromTime() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'hours', Sort.asc);
+      return query.addSortBy(r'fromTime', Sort.asc);
     });
   }
 
-  QueryBuilder<Lesson, Lesson, QAfterSortBy> sortByHoursDesc() {
+  QueryBuilder<Lesson, Lesson, QAfterSortBy> sortByFromTimeDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'hours', Sort.desc);
+      return query.addSortBy(r'fromTime', Sort.desc);
     });
   }
 
@@ -858,6 +853,18 @@ extension LessonQuerySortBy on QueryBuilder<Lesson, Lesson, QSortBy> {
   QueryBuilder<Lesson, Lesson, QAfterSortBy> sortByNameDesc() {
     return QueryBuilder.apply(this, (query) {
       return query.addSortBy(r'name', Sort.desc);
+    });
+  }
+
+  QueryBuilder<Lesson, Lesson, QAfterSortBy> sortByToTime() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'toTime', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Lesson, Lesson, QAfterSortBy> sortByToTimeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'toTime', Sort.desc);
     });
   }
 }
@@ -875,15 +882,15 @@ extension LessonQuerySortThenBy on QueryBuilder<Lesson, Lesson, QSortThenBy> {
     });
   }
 
-  QueryBuilder<Lesson, Lesson, QAfterSortBy> thenByHours() {
+  QueryBuilder<Lesson, Lesson, QAfterSortBy> thenByFromTime() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'hours', Sort.asc);
+      return query.addSortBy(r'fromTime', Sort.asc);
     });
   }
 
-  QueryBuilder<Lesson, Lesson, QAfterSortBy> thenByHoursDesc() {
+  QueryBuilder<Lesson, Lesson, QAfterSortBy> thenByFromTimeDesc() {
     return QueryBuilder.apply(this, (query) {
-      return query.addSortBy(r'hours', Sort.desc);
+      return query.addSortBy(r'fromTime', Sort.desc);
     });
   }
 
@@ -910,6 +917,18 @@ extension LessonQuerySortThenBy on QueryBuilder<Lesson, Lesson, QSortThenBy> {
       return query.addSortBy(r'name', Sort.desc);
     });
   }
+
+  QueryBuilder<Lesson, Lesson, QAfterSortBy> thenByToTime() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'toTime', Sort.asc);
+    });
+  }
+
+  QueryBuilder<Lesson, Lesson, QAfterSortBy> thenByToTimeDesc() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addSortBy(r'toTime', Sort.desc);
+    });
+  }
 }
 
 extension LessonQueryWhereDistinct on QueryBuilder<Lesson, Lesson, QDistinct> {
@@ -920,10 +939,9 @@ extension LessonQueryWhereDistinct on QueryBuilder<Lesson, Lesson, QDistinct> {
     });
   }
 
-  QueryBuilder<Lesson, Lesson, QDistinct> distinctByHours(
-      {bool caseSensitive = true}) {
+  QueryBuilder<Lesson, Lesson, QDistinct> distinctByFromTime() {
     return QueryBuilder.apply(this, (query) {
-      return query.addDistinctBy(r'hours', caseSensitive: caseSensitive);
+      return query.addDistinctBy(r'fromTime');
     });
   }
 
@@ -931,6 +949,12 @@ extension LessonQueryWhereDistinct on QueryBuilder<Lesson, Lesson, QDistinct> {
       {bool caseSensitive = true}) {
     return QueryBuilder.apply(this, (query) {
       return query.addDistinctBy(r'name', caseSensitive: caseSensitive);
+    });
+  }
+
+  QueryBuilder<Lesson, Lesson, QDistinct> distinctByToTime() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addDistinctBy(r'toTime');
     });
   }
 }
@@ -948,15 +972,21 @@ extension LessonQueryProperty on QueryBuilder<Lesson, Lesson, QQueryProperty> {
     });
   }
 
-  QueryBuilder<Lesson, String?, QQueryOperations> hoursProperty() {
+  QueryBuilder<Lesson, int?, QQueryOperations> fromTimeProperty() {
     return QueryBuilder.apply(this, (query) {
-      return query.addPropertyName(r'hours');
+      return query.addPropertyName(r'fromTime');
     });
   }
 
   QueryBuilder<Lesson, String?, QQueryOperations> nameProperty() {
     return QueryBuilder.apply(this, (query) {
       return query.addPropertyName(r'name');
+    });
+  }
+
+  QueryBuilder<Lesson, int?, QQueryOperations> toTimeProperty() {
+    return QueryBuilder.apply(this, (query) {
+      return query.addPropertyName(r'toTime');
     });
   }
 }
