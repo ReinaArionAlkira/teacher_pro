@@ -5,12 +5,14 @@ import 'package:teacher_pro/services/isar_service.dart';
 class TextFieldWidget extends StatelessWidget {
   TextFieldWidget(
       {required this.text,
+      this.editable = true,
       this.type,
       this.onSaved,
       this.onChange,
       this.value,
       super.key});
 
+  final bool editable;
   final Function(String?)? onChange;
   final IsarService isarService = IsarService();
   final TextInputType? type;
@@ -20,12 +22,13 @@ class TextFieldWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController _controllerText = TextEditingController(text: value);
+    // TextEditingController _controllerText = TextEditingController(text: value);
     TextInputFormatter formater = FilteringTextInputFormatter.deny(r'\d');
     if (type == TextInputType.number) {
       formater = FilteringTextInputFormatter.digitsOnly;
     }
     return TextFormField(
+      readOnly: !editable,
       onChanged: onChange,
       onSaved: onSaved,
       keyboardType: type,
@@ -46,6 +49,7 @@ class TextFieldWidget extends StatelessWidget {
         }
         return null;
       },
+      controller: TextEditingController(text: value),
       decoration: InputDecoration(
         border: const OutlineInputBorder(),
         hintText: text,

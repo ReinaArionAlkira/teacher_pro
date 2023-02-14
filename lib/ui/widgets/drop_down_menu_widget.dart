@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class DropDownMenuWidget<T> extends StatelessWidget {
   const DropDownMenuWidget(
-      {required this.val,
+      {this.val,
       required this.text,
       required this.list,
       this.onChanged,

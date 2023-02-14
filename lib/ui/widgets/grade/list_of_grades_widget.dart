@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:teacher_pro/services/grade_service.dart';
 import 'package:teacher_pro/services/lesson_service.dart';
+import 'package:teacher_pro/ui/widgets/grade/edit_grade_widget.dart';
 
 import '../../../services/entities/grade.dart';
 
@@ -38,7 +39,15 @@ class ListOfGradesWidget extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return Card(
                     child: ListTile(
-                      //TODO: onTap
+                      onTap: (() {
+                        MaterialPageRoute route =
+                            MaterialPageRoute(builder: (BuildContext context) {
+                          return EditGradeWidget(
+                            grade: grades[index],
+                          );
+                        });
+                        Navigator.of(context).push(route);
+                      }),
                       title: Text(grades[index].grade.toString()),
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
