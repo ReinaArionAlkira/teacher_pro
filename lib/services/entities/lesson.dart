@@ -23,4 +23,9 @@ class Lesson {
   final grades = IsarLinks<Grade>();
 
   final students = IsarLinks<Student>();
+
+  @override
+  String toString() {
+    return name ?? "";
+  }
 }

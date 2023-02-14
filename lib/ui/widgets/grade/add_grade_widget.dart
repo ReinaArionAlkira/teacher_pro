@@ -1,12 +1,16 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
-import 'package:teacher_pro/ui/widgets/text_field_widget.dart';
+import 'package:teacher_pro/services/entities/grade.dart';
+import 'package:teacher_pro/services/student_service.dart';
 
 import '../../../services/entities/lesson.dart';
 import '../../../services/entities/student.dart';
 import '../../../services/grade_service.dart';
+import '../../../services/lesson_service.dart';
 import '../add_widget.dart';
+import '../drop_down_menu_Widget.dart';
 
-//TODO: Edit it
 class AddGradeWidget extends StatefulWidget {
   const AddGradeWidget({super.key});
 
@@ -16,43 +20,64 @@ class AddGradeWidget extends StatefulWidget {
 
 class _AddGradeWidgetState extends State<AddGradeWidget> {
   final GradeService gradeService = GradeService();
+  final LessonService lessonService = LessonService();
+  final StudentService studentService = StudentService();
+
+  List<Lesson> lessons = [];
+  List<Student> students = [];
 
   double grade = 2.5;
+
   final List<double> gradez = [2.5, 3.0, 3.5, 4.0, 4.5, 5.0];
 
-  late final Student student;
+  Student? student;
+  StreamSubscription? sub;
 
-  late final Lesson lesson;
+  Lesson? lesson;
+
+  @override
+  initState() {
+    super.initState();
+    lessonService
+        .getAllLessons()
+        .first
+        .then((value) => setState(() => lessons = value));
+    studentService
+        .getAllStudents()
+        // .getAllStudentsFromLesson(lesson!)
+        .first
+        .then((value) => setState(() => students = value));
+  }
 
   @override
   Widget build(BuildContext context) {
-    return AddWidget(formFields: [
-      DropdownButtonFormField(
-        value: grade,
-        decoration: const InputDecoration(
-          border: OutlineInputBorder(),
-        ),
-        isExpanded: true,
-        hint: const Text("Grade"),
-        items: gradez
-            .map((e) => DropdownMenuItem(
-                  value: e,
-                  child: Text(e.toString()),
-                ))
-            .toList(),
-        onChanged: (value) => setState(() => grade = value!),
-        validator: (value) {
-          if (value == null) {
-            return 'Please enter some data';
-          }
-          return null;
+    return AddWidget(
+        onSubmit: () async {
+          await gradeService.createGrade(Grade()
+            ..grade = grade
+            ..lesson.value = lesson
+            ..student.value = student);
         },
-      ),
-
-      //TODO: dropdown list of existing lessons
-      TextFieldWidget(text: 'Lesson'),
-      //TODO: dropdown list of students from chosen lesson
-      TextFieldWidget(text: 'Name'),
-    ]);
+        formFields: [
+          DropDownMenuWidget(
+            val: grade,
+            list: gradez,
+            text: "Grade",
+            onChanged: (value) => setState(() => grade = value ?? 2.5),
+          ),
+          DropDownMenuWidget(
+            val: lesson,
+            text: "Lesson",
+            list: lessons,
+            onChanged: (value) => setState(() => lesson = value),
+          ),
+          //TODO: students from chosen lesson
+          DropDownMenuWidget(
+            val: student,
+            text: "Student",
+            list: students,
+            onChanged: (value) => setState(() => student = value!),
+          ),
+        ]);
   }
 }

@@ -15,4 +15,9 @@ class Student {
   final grades = IsarLinks<Grade>();
 
   final lessons = IsarLinks<Lesson>();
+
+  @override
+  String toString() {
+    return '$surrname $name';
+  }
 }

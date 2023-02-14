@@ -41,6 +41,7 @@ class ListOfGradesWidget extends StatelessWidget {
                       //TODO: onTap
                       title: Text(grades[index].grade.toString()),
                       subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                               '${grades[index].student.value!.surrname} ${grades[index].student.value!.name}'),

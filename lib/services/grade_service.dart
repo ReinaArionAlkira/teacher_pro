@@ -15,7 +15,12 @@ class GradeService {
   GradeService._internal();
 
   Future<void> createGrade(Grade newGrade) async {
-    await isar.writeTxn<int>(() => isar.grades.put(newGrade));
+    await isar.writeTxn<int>(() async {
+      var x = await isar.grades.put(newGrade);
+      await newGrade.lesson.save();
+      await newGrade.student.save();
+      return x;
+    });
   }
 
 //TODO: for one student
