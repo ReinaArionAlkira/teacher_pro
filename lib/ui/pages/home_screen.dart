@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:teacher_pro/services/isar_service.dart';
-import 'package:teacher_pro/ui/widgets/list_of_grades_widget.dart';
-import 'package:teacher_pro/ui/widgets/list_of_lessons_widget.dart';
-import 'package:teacher_pro/ui/widgets/list_of_students_widget.dart';
-import 'package:teacher_pro/ui/widgets/add_student_widget.dart';
-import 'package:teacher_pro/ui/widgets/add_grade_widget.dart';
-import 'package:teacher_pro/ui/widgets/add_lesson_widget.dart';
+import 'package:teacher_pro/ui/widgets/lesson/add_lesson_widget.dart';
+
+import '../widgets/grade/add_grade_widget.dart';
+import '../widgets/grade/list_of_grades_widget.dart';
+import '../widgets/lesson/list_of_lessons_widget.dart';
+import '../widgets/student/add_student_widget.dart';
+import '../widgets/student/list_of_students_widget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -17,7 +17,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
-  static final isarService = IsarService();
 
   static final List<Widget> _dialogOptions = <Widget>[
     const AddGradeWidget(),
@@ -26,9 +25,9 @@ class _HomePageState extends State<HomePage> {
   ];
 
   static final List<Widget> _widgetOptions = <Widget>[
-    ListOfGradesWidget(isarService: isarService),
-    ListOfStudentsWidget(isarService: isarService),
-    ListOfLessonsWidget(isarService: isarService),
+    ListOfGradesWidget(),
+    ListOfStudentsWidget(),
+    ListOfLessonsWidget(),
   ];
 
   void _onItemTapped(int index) {

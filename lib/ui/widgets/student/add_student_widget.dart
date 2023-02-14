@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:teacher_pro/services/entities/student.dart';
+import 'package:teacher_pro/services/student_service.dart';
 import 'package:teacher_pro/ui/widgets/text_field_widget.dart';
-import 'package:teacher_pro/services/isar_service.dart';
 
-import 'add_widget.dart';
+import '../add_widget.dart';
 
 class AddStudentWidget extends StatefulWidget {
   const AddStudentWidget({super.key});
@@ -13,7 +13,7 @@ class AddStudentWidget extends StatefulWidget {
 }
 
 class _AddStudentWidgetState extends State<AddStudentWidget> {
-  final IsarService isarService = IsarService();
+  final StudentService studentService = StudentService();
 
   String name = '';
   String surrname = '';
@@ -23,7 +23,7 @@ class _AddStudentWidgetState extends State<AddStudentWidget> {
   Widget build(BuildContext context) {
     return AddWidget(
       onSubmit: () async {
-        await isarService.createStudent(
+        await studentService.createStudent(
           Student()
             ..name = name
             ..surrname = surrname

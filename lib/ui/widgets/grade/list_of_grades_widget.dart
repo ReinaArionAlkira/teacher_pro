@@ -1,28 +1,29 @@
 import 'package:flutter/material.dart';
-import 'package:teacher_pro/services/isar_service.dart';
+import 'package:teacher_pro/services/grade_service.dart';
+import 'package:teacher_pro/services/lesson_service.dart';
 
-import '../../services/entities/student.dart';
+import '../../../services/entities/grade.dart';
 
-class ListOfStudentsWidget extends StatelessWidget {
-  ListOfStudentsWidget({required this.isarService, super.key});
+class ListOfGradesWidget extends StatelessWidget {
+  ListOfGradesWidget({super.key});
 
-  final IsarService isarService;
+  final GradeService gradeService = GradeService();
 
   final List options = [];
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<Student>>(
-        stream: isarService.getAllStudents(),
+    return StreamBuilder<List<Grade>>(
+        stream: gradeService.getAllGrades(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            final students = snapshot.data;
-            if (students!.isEmpty) {
+            final grades = snapshot.data;
+            if (grades!.isEmpty) {
               return const Card(
                 margin: EdgeInsets.only(top: 10.0),
                 child: Text(
                   textAlign: TextAlign.center,
-                  'No students found',
+                  'No grades found',
                   style: TextStyle(
                     fontSize: 20,
                   ),
@@ -33,18 +34,23 @@ class ListOfStudentsWidget extends StatelessWidget {
               child: ListView.builder(
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
-                itemCount: students.length,
+                itemCount: grades.length,
                 itemBuilder: (context, index) {
                   return Card(
                     child: ListTile(
-                      title: Text(
-                          '${students[index].name} ${students[index].surrname} ${students[index].registerNo}'),
-                      // subtitle:
-                      //     Text(students[index].student.registerNo as String),
+                      //TODO: onTap
+                      title: Text(grades[index].grade.toString()),
+                      subtitle: Column(
+                        children: [
+                          Text(
+                              '${grades[index].student.value!.surrname} ${grades[index].student.value!.name}'),
+                          Text('${grades[index].lesson.value!.name}'),
+                        ],
+                      ),
                       trailing: IconButton(
                         icon: const Icon(Icons.delete),
                         onPressed: () {
-                          isarService.deleteStudent(students[index].registerNo);
+                          gradeService.deleteGrade(grades[index]);
                         },
                       ),
                     ),

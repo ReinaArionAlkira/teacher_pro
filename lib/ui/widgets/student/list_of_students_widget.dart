@@ -1,27 +1,28 @@
 import 'package:flutter/material.dart';
+import 'package:teacher_pro/services/student_service.dart';
 
-import '../../services/entities/lesson.dart';
+import '../../../services/entities/student.dart';
 
-class ListOfLessonsWidget extends StatelessWidget {
-  ListOfLessonsWidget({required this.isarService, super.key});
+class ListOfStudentsWidget extends StatelessWidget {
+  ListOfStudentsWidget({super.key});
 
-  final isarService;
+  final StudentService studentService = StudentService();
 
   final List options = [];
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<List<Lesson>>(
-        stream: isarService.getAllLessons(),
+    return StreamBuilder<List<Student>>(
+        stream: studentService.getAllStudents(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            final lessons = snapshot.data;
-            if (lessons!.isEmpty) {
+            final students = snapshot.data;
+            if (students!.isEmpty) {
               return const Card(
                 margin: EdgeInsets.only(top: 10.0),
                 child: Text(
                   textAlign: TextAlign.center,
-                  'No lessons found',
+                  'No students found',
                   style: TextStyle(
                     fontSize: 20,
                   ),
@@ -32,16 +33,20 @@ class ListOfLessonsWidget extends StatelessWidget {
               child: ListView.builder(
                 scrollDirection: Axis.vertical,
                 shrinkWrap: true,
-                itemCount: lessons.length,
+                itemCount: students.length,
                 itemBuilder: (context, index) {
                   return Card(
                     child: ListTile(
-                      title: Text(lessons[index].name!),
-                      // subtitle:
-                      //     Text(lessons[index].student.registerNo as String),
+                      //TODO: onTap
+                      title: Text(
+                          '${students[index].name} ${students[index].surrname}'),
+                      subtitle: Text(
+                          'Register No: ${students[index].registerNo.toString()}'),
                       trailing: IconButton(
                         icon: const Icon(Icons.delete),
-                        onPressed: () {},
+                        onPressed: () {
+                          studentService.deleteStudent(students[index]);
+                        },
                       ),
                     ),
                   );
