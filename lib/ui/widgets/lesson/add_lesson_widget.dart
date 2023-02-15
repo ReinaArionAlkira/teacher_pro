@@ -112,8 +112,6 @@ class _AddLessonWidgetState extends State<AddLessonWidget> {
                   hintText: timeRange == null
                       ? "Select time range"
                       : "${timeRange!.startTime.format(context)} - ${timeRange!.endTime.format(context)}"))
-          //TODO: list to fast adding existing students
-          //https://medium.flutterdevs.com/selecting-multiple-item-in-list-in-flutter-811a3049c56f
         ]);
   }
 }

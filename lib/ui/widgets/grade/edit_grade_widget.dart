@@ -150,7 +150,6 @@ class _EditGradeWidgetState extends State<EditGradeWidget> {
                     onChanged: (value) =>
                         setState(() => gradeDraft.lesson.value = value!),
                   ),
-                  //TODO: dropdown list of students from lesson
                   DropDownMenuWidget(
                     val: gradeDraft.student.value,
                     text: "Student",

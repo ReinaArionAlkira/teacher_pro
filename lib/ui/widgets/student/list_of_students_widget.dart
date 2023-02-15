@@ -5,9 +5,11 @@ import '../../../services/entities/student.dart';
 import 'edit_student_widget.dart';
 
 class ListOfStudentsWidget extends StatelessWidget {
-  ListOfStudentsWidget({required this.stream, super.key});
+  ListOfStudentsWidget({required this.stream, this.onDelete, super.key});
 
   final StudentService studentService = StudentService();
+
+  final void Function(Student stdent)? onDelete;
 
   final Stream<List<Student>> Function() stream;
 
@@ -55,9 +57,11 @@ class ListOfStudentsWidget extends StatelessWidget {
                           'Register No: ${students[index].registerNo.toString()}'),
                       trailing: IconButton(
                         icon: const Icon(Icons.delete),
-                        onPressed: () {
-                          studentService.deleteStudent(students[index]);
-                        },
+                        onPressed: onDelete != null
+                            ? () => onDelete!(students[index])
+                            : () {
+                                studentService.deleteStudent(students[index]);
+                              },
                       ),
                     ),
                   );

@@ -23,7 +23,6 @@ class GradeService {
     });
   }
 
-//TODO: for one student
   Stream<List<Grade>> getAllGrades() async* {
     yield* isar.grades.where().watch(fireImmediately: true);
   }

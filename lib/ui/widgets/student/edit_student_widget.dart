@@ -12,7 +12,6 @@ import '../edit_widget.dart';
 import '../grade/list_of_grades_widget.dart';
 import '../lesson/list_of_lessons_widget.dart';
 
-//TODO: Edit it and add inherited data
 class EditStudentWidget extends StatefulWidget {
   const EditStudentWidget({required this.student, super.key});
 
@@ -74,7 +73,6 @@ class _EditStudentWidgetState extends State<EditStudentWidget> {
             EditWidget(
               mode: mode,
               onCancel: () {
-                // initDraftFromGrade();
                 setState(() {
                   mode = Mode.view;
                 });
@@ -115,8 +113,6 @@ class _EditStudentWidgetState extends State<EditStudentWidget> {
                                 value:
                                     'Number of grades: ${snapshot.hasData ? snapshot.data : "0"}',
                                 text: 'Number of grades',
-                                onSaved: (val) =>
-                                    registerNo = int.parse(val ?? "0"),
                                 type: TextInputType.number);
                           }),
                       FutureBuilder(
@@ -152,6 +148,9 @@ class _EditStudentWidgetState extends State<EditStudentWidget> {
             ListOfGradesWidget(
                 stream: () => gradeService.getAllGradesFromStudent(student)),
             ListOfLessonsWidget(
+                onDelete: (lesson) => lessonService
+                    .deleteStudentFromLesson(lesson, student)
+                    .then((v) => setState(() {})),
                 stream: () => lessonService
                     .getAllLessonsFromStudent(student.registerNo!)),
           ],

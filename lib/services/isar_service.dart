@@ -38,5 +38,5 @@ class IsarService {
     await isar.writeTxn(() => isar.clear());
   }
 
-  //TODO: searching by...
+  //todo: searching by...
 }

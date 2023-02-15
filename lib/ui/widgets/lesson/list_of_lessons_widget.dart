@@ -3,11 +3,14 @@ import 'package:teacher_pro/services/lesson_service.dart';
 
 import '../../../services/entities/lesson.dart';
 import '../../../utils/time_range_convert.dart';
+import 'edit_lesson_widget.dart';
 
 class ListOfLessonsWidget extends StatelessWidget {
-  ListOfLessonsWidget({required this.stream, super.key});
+  ListOfLessonsWidget({required this.stream, this.onDelete, super.key});
 
   final LessonService lessonService = LessonService();
+
+  final void Function(Lesson lesson)? onDelete;
 
   final Stream<List<Lesson>> Function() stream;
 
@@ -40,15 +43,25 @@ class ListOfLessonsWidget extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return Card(
                     child: ListTile(
-                      //TODO: onTap
+                      onTap: (() {
+                        MaterialPageRoute route =
+                            MaterialPageRoute(builder: (BuildContext context) {
+                          return EditLessonWidget(
+                            lesson: lessons[index],
+                          );
+                        });
+                        Navigator.of(context).push(route);
+                      }),
                       title: Text(lessons[index].name!),
                       subtitle: Text(
                           '${lessons[index].day}:  ${minutesToTimeOfDay(lessons[index].fromTime!).format(context)} - ${minutesToTimeOfDay(lessons[index].toTime!).format(context)}'),
                       trailing: IconButton(
                         icon: const Icon(Icons.delete),
-                        onPressed: () {
-                          lessonService.deleteLesson(lessons[index]);
-                        },
+                        onPressed: onDelete != null
+                            ? () => onDelete!(lessons[index])
+                            : () {
+                                lessonService.deleteLesson(lessons[index]);
+                              },
                       ),
                     ),
                   );

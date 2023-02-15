@@ -42,11 +42,6 @@ class _AddGradeWidgetState extends State<AddGradeWidget> {
         .getAllLessons()
         .first
         .then((value) => setState(() => lessons = value));
-    studentService
-        .getAllStudents()
-        // .getAllStudentsFromLesson(lesson!)
-        .first
-        .then((value) => setState(() => students = value));
   }
 
   @override
@@ -69,10 +64,16 @@ class _AddGradeWidgetState extends State<AddGradeWidget> {
             val: lesson,
             text: "Lesson",
             list: lessons,
-            onChanged: (value) => setState(() => lesson = value),
+            onChanged: (value) => studentService
+                .getAllStudentsFromLesson(value!)
+                .first
+                .then((students) => setState(() {
+                      lesson = value;
+                      this.students = students;
+                    })),
           ),
-          //TODO: students from chosen lesson
           DropDownMenuWidget(
+            disabledHint: const Text("Choose lesson"),
             val: student,
             text: "Student",
             list: students,

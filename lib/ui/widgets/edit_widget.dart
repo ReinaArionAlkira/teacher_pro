@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:teacher_pro/services/isar_service.dart';
 
-import 'grade/edit_grade_widget.dart';
-
 enum Mode { view, edit }
 
 class EditWidget extends StatelessWidget {

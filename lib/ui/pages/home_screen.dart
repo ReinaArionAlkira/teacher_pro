@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:teacher_pro/services/grade_service.dart';
 import 'package:teacher_pro/ui/widgets/lesson/add_lesson_widget.dart';
+import 'package:teacher_pro/ui/widgets/text_field_widget.dart';
 
 import '../../services/lesson_service.dart';
 import '../../services/student_service.dart';
@@ -60,21 +61,33 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.end,
               mainAxisSize: MainAxisSize.max,
               children: [
-                const Expanded(
-                  child: TextField(
-                      style: TextStyle(fontSize: 20),
-                      textAlign: TextAlign.justify,
-                      maxLines: 1,
-                      decoration: InputDecoration(
-                        contentPadding: EdgeInsets.all(10.0),
-                        border: OutlineInputBorder(),
-                        hintText: 'Search',
-                      )),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.search),
-                  onPressed: () {},
-                ),
+                // const Expanded(
+                //   child:
+                //   TextField(
+                //       style: TextStyle(fontSize: 20),
+                //       textAlign: TextAlign.justify,
+                //       maxLines: 1,
+                //       decoration: InputDecoration(
+                //         contentPadding: EdgeInsets.all(10.0),
+                //         border: OutlineInputBorder(),
+                //         hintText: 'Search',
+                //       )),
+                // ),
+                // IconButton(
+                //   icon: const Icon(Icons.search),
+                //   onPressed: () {},
+                // ),
+                Expanded(
+                    child: TextFormField(
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(fontWeight: FontWeight.bold),
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                        ),
+                        readOnly: true,
+                        controller: TextEditingController(
+                            text:
+                                "A d d   s o m e   r e c o r d s   t o   l i s t "))),
                 IconButton(
                   icon: const Icon(Icons.add),
                   onPressed: () {

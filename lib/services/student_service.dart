@@ -19,6 +19,16 @@ class StudentService {
     await isar.writeTxn<int>(() => isar.students.put(newStudent));
   }
 
+  Future<void> editStudent(int registerNo, Student newStudent) async {
+    await isar.writeTxn<int>(() async {
+      newStudent.registerNo = registerNo;
+      await isar.students.put(newStudent);
+      await newStudent.grades.save();
+      await newStudent.lessons.save();
+      return newStudent.registerNo!;
+    });
+  }
+
   Stream<List<Student>> getAllStudents() async* {
     yield* isar.students.where().watch(fireImmediately: true);
   }
@@ -31,13 +41,18 @@ class StudentService {
         .watch(fireImmediately: true);
   }
 
-  Future<void> editStudent(int registerNo, Student newStudent) async {
-    await isar.writeTxn<int>(() async {
-      newStudent.registerNo = registerNo;
-      await isar.students.put(newStudent);
-      await newStudent.grades.save();
-      await newStudent.lessons.save();
-      return newStudent.registerNo!;
+  Future<int> getCountStudentsForLesson(int id) async {
+    return await isar.students
+        .where()
+        .filter()
+        .lessons((q) => q.idEqualTo(id))
+        .count();
+  }
+
+  Future<void> deleteLessonFromStudent(Student student, Lesson lesson) async {
+    await isar.writeTxn<void>(() async {
+      student.lessons.remove(lesson);
+      await student.lessons.save();
     });
   }
 

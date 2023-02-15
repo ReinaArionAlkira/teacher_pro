@@ -6,8 +6,10 @@ class DropDownMenuWidget<T> extends StatelessWidget {
       required this.text,
       required this.list,
       this.onChanged,
+      this.disabledHint,
       super.key});
 
+  final Widget? disabledHint;
   final T? val;
   final String text;
   final List<T> list;
@@ -16,6 +18,7 @@ class DropDownMenuWidget<T> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField(
+      disabledHint: disabledHint,
       value: val,
       decoration: const InputDecoration(
         border: OutlineInputBorder(),
