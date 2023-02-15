@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:teacher_pro/services/grade_service.dart';
 import 'package:teacher_pro/ui/widgets/lesson/add_lesson_widget.dart';
 
+import '../../services/lesson_service.dart';
+import '../../services/student_service.dart';
 import '../widgets/grade/add_grade_widget.dart';
 import '../widgets/grade/list_of_grades_widget.dart';
 import '../widgets/lesson/list_of_lessons_widget.dart';
@@ -24,12 +27,6 @@ class _HomePageState extends State<HomePage> {
     const AddLessonWidget(),
   ];
 
-  static final List<Widget> _widgetOptions = <Widget>[
-    ListOfGradesWidget(),
-    ListOfStudentsWidget(),
-    ListOfLessonsWidget(),
-  ];
-
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
@@ -48,6 +45,12 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    final List<Widget> widgetOptions = <Widget>[
+      ListOfGradesWidget(stream: GradeService().getAllGrades),
+      ListOfStudentsWidget(stream: StudentService().getAllStudents),
+      ListOfLessonsWidget(stream: LessonService().getAllLessons),
+    ];
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Column(children: [
@@ -85,7 +88,7 @@ class _HomePageState extends State<HomePage> {
           height: 2,
           color: Theme.of(context).primaryColor,
         ),
-        _widgetOptions.elementAt(_selectedIndex),
+        widgetOptions.elementAt(_selectedIndex),
       ]),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[

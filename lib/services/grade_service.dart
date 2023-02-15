@@ -36,6 +36,24 @@ class GradeService {
         .watch(fireImmediately: true);
   }
 
+  Future<void> editGrade(int id, Grade newGrade) async {
+    await isar.writeTxn<int>(() async {
+      newGrade.id = id;
+      await isar.grades.put(newGrade);
+      await newGrade.lesson.save();
+      await newGrade.student.save();
+      return newGrade.id;
+    });
+  }
+
+  Future<int> getCountGradesForStudent(int registerNo) async {
+    return await isar.grades
+        .where()
+        .filter()
+        .student((q) => q.registerNoEqualTo(registerNo))
+        .count();
+  }
+
   // Deleting
   Future<void> deleteGrade(Grade record) async {
     await isar.writeTxn(() => isar.grades.delete(record.id));

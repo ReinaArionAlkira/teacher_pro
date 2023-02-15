@@ -12,8 +12,6 @@ import '../../../services/lesson_service.dart';
 import '../../../services/student_service.dart';
 import '../drop_down_menu_Widget.dart';
 
-enum Mode { view, edit }
-
 class EditGradeWidget extends StatefulWidget {
   const EditGradeWidget({required this.grade, super.key});
 
@@ -33,28 +31,54 @@ class _EditGradeWidgetState extends State<EditGradeWidget> {
 
   final List<double> gradez = [2.5, 3.0, 3.5, 4.0, 4.5, 5.0];
 
-  Student? student;
-  StreamSubscription? sub;
-
-  Lesson? lesson;
-
   @override
   initState() {
     super.initState();
-    lessonService.getAllLessons().first.then((value) => setState(() {
-          lessons = value;
-          lesson = lessons
-              .where((element) => element.id == grade.lesson.value?.id)
-              .first;
-        }));
-    studentService
-        .getAllStudents()
-        // .getAllStudentsFromLesson(lesson!)
-        .first
-        .then((value) => setState(() => students = value));
+    init();
   }
 
-  Grade get grade => widget.grade;
+  Future<void> init() async {
+    grade = widget.grade;
+    final lessons = await lessonService.getAllLessons().first;
+    final students = await studentService.getAllStudents().first;
+    setState(() {
+      this.lessons = lessons;
+      this.students = students;
+    });
+    initDraftFromGrade();
+  }
+
+  Lesson findLessonForGrade(Grade grade) {
+    return lessons
+        .where((element) => element.id == grade.lesson.value?.id)
+        .first;
+  }
+
+  Student findStudentForGrade(Grade grade) {
+    return students
+        .where(
+            (element) => element.registerNo == grade.student.value?.registerNo)
+        .first;
+  }
+
+  void initDraftFromGrade() {
+    gradeDraft.id = grade.id;
+    gradeDraft.grade = grade.grade;
+    gradeDraft.lesson.value = findLessonForGrade(grade);
+    gradeDraft.student.value = findStudentForGrade(grade);
+  }
+
+  Future<void> applyDraft() async {
+    await gradeService.editGrade(widget.grade.id, gradeDraft);
+    setState(() {
+      grade.grade = gradeDraft.grade;
+      grade.lesson.value = gradeDraft.lesson.value;
+      grade.student.value = gradeDraft.student.value;
+    });
+  }
+
+  late Grade grade;
+  Grade gradeDraft = Grade();
 
   Mode mode = Mode.view;
   bool get editable => mode == Mode.edit;
@@ -67,16 +91,19 @@ class _EditGradeWidgetState extends State<EditGradeWidget> {
               mode = Mode.edit;
             }),
         body: EditWidget(
-          onCancel: () => setState(() => mode = Mode.view),
           mode: mode,
-          // onSubmit: () async {
-          //   await gradeService.editGrade(
-          //       grade.id,
-          //       Grade()
-          //         ..grade = grade.grade
-          //         ..lesson.value = lesson
-          //         ..student.value = student);
-          // },
+          onCancel: () {
+            initDraftFromGrade();
+            setState(() {
+              mode = Mode.view;
+            });
+          },
+          onSubmit: () async {
+            await applyDraft();
+            setState(() {
+              mode = Mode.view;
+            });
+          },
           formFields: mode == Mode.view
               ? [
                   TextFieldWidget(
@@ -94,8 +121,6 @@ class _EditGradeWidgetState extends State<EditGradeWidget> {
                         value: grade.lesson.value!.day,
                         text: 'Day: '),
                   ),
-
-                  //TODO: dropdown list of students from lesson
                   TextFieldWidget(
                       editable: false,
                       value: grade.student.value!.name,
@@ -112,25 +137,27 @@ class _EditGradeWidgetState extends State<EditGradeWidget> {
                 ]
               : [
                   DropDownMenuWidget(
-                    val: grade.grade,
+                    val: gradeDraft.grade,
                     list: gradez,
                     text: "Grade",
                     onChanged: (value) =>
-                        setState(() => grade.grade = value ?? 2.5),
+                        setState(() => gradeDraft.grade = value ?? 2.5),
                   ),
                   DropDownMenuWidget(
-                    val: lesson,
+                    val: gradeDraft.lesson.value,
                     text: "Lesson",
                     list: lessons,
-                    onChanged: (value) => setState(() => lesson = value!),
+                    onChanged: (value) =>
+                        setState(() => gradeDraft.lesson.value = value!),
                   ),
-                  //TODO: students from chosen lesson
-                  // DropDownMenuWidget(
-                  //   val: grade.student.value,
-                  //   text: "Student",
-                  //   list: students,
-                  //   onChanged: (value) => setState(() => student = value!),
-                  // ),
+                  //TODO: dropdown list of students from lesson
+                  DropDownMenuWidget(
+                    val: gradeDraft.student.value,
+                    text: "Student",
+                    list: students,
+                    onChanged: (value) =>
+                        setState(() => gradeDraft.student.value = value!),
+                  ),
                 ],
         ));
   }

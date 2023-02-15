@@ -2,18 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:teacher_pro/services/student_service.dart';
 
 import '../../../services/entities/student.dart';
+import 'edit_student_widget.dart';
 
 class ListOfStudentsWidget extends StatelessWidget {
-  ListOfStudentsWidget({super.key});
+  ListOfStudentsWidget({required this.stream, super.key});
 
   final StudentService studentService = StudentService();
+
+  final Stream<List<Student>> Function() stream;
 
   final List options = [];
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<Student>>(
-        stream: studentService.getAllStudents(),
+        stream: stream(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final students = snapshot.data;
@@ -37,7 +40,15 @@ class ListOfStudentsWidget extends StatelessWidget {
                 itemBuilder: (context, index) {
                   return Card(
                     child: ListTile(
-                      //TODO: onTap
+                      onTap: (() {
+                        MaterialPageRoute route =
+                            MaterialPageRoute(builder: (BuildContext context) {
+                          return EditStudentWidget(
+                            student: students[index],
+                          );
+                        });
+                        Navigator.of(context).push(route);
+                      }),
                       title: Text(
                           '${students[index].name} ${students[index].surrname}'),
                       subtitle: Text(

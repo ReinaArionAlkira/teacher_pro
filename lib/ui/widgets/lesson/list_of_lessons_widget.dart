@@ -5,16 +5,18 @@ import '../../../services/entities/lesson.dart';
 import '../../../utils/time_range_convert.dart';
 
 class ListOfLessonsWidget extends StatelessWidget {
-  ListOfLessonsWidget({super.key});
+  ListOfLessonsWidget({required this.stream, super.key});
 
   final LessonService lessonService = LessonService();
+
+  final Stream<List<Lesson>> Function() stream;
 
   final List options = [];
 
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<Lesson>>(
-        stream: lessonService.getAllLessons(),
+        stream: stream(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final lessons = snapshot.data;

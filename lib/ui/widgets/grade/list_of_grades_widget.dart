@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:teacher_pro/services/grade_service.dart';
-import 'package:teacher_pro/services/lesson_service.dart';
 import 'package:teacher_pro/ui/widgets/grade/edit_grade_widget.dart';
 
 import '../../../services/entities/grade.dart';
 
 class ListOfGradesWidget extends StatelessWidget {
-  ListOfGradesWidget({super.key});
+  ListOfGradesWidget(
+      {required this.stream, this.displayStudent = true, super.key});
 
   final GradeService gradeService = GradeService();
 
-  final List options = [];
+  final Stream<List<Grade>> Function() stream;
 
+  final bool displayStudent;
+
+  final List options = [];
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<Grade>>(
-        stream: gradeService.getAllGrades(),
+        stream: stream(),
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             final grades = snapshot.data;
@@ -51,11 +54,15 @@ class ListOfGradesWidget extends StatelessWidget {
                       title: Text(grades[index].grade.toString()),
                       subtitle: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                              '${grades[index].student.value!.surrname} ${grades[index].student.value!.name}'),
-                          Text('${grades[index].lesson.value!.name}'),
-                        ],
+                        children: displayStudent
+                            ? [
+                                Text(
+                                    '${grades[index].student.value!.surrname} ${grades[index].student.value!.name}'),
+                                Text('${grades[index].lesson.value!.name}'),
+                              ]
+                            : [
+                                Text('${grades[index].lesson.value!.name}'),
+                              ],
                       ),
                       trailing: IconButton(
                         icon: const Icon(Icons.delete),

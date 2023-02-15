@@ -4,10 +4,12 @@ class DetailsLayoutWidget extends StatefulWidget {
   const DetailsLayoutWidget(
       {super.key,
       required this.body,
+      this.bottom,
       this.onEdit,
       this.text,
       this.editButtonActive = true});
 
+  final PreferredSizeWidget? bottom;
   final Widget body;
   final void Function()? onEdit;
   final String? text;
@@ -18,6 +20,7 @@ class DetailsLayoutWidget extends StatefulWidget {
 }
 
 class _DetailsLayoutWidgetState extends State<DetailsLayoutWidget> {
+  PreferredSizeWidget? get bottom => widget.bottom;
   Widget? get body => widget.body;
   void Function()? get onEdit => widget.onEdit;
   String? get text => widget.text;
@@ -35,6 +38,7 @@ class _DetailsLayoutWidgetState extends State<DetailsLayoutWidget> {
         appBar: AppBar(
           title: Text(text ?? 'Details'),
           actions: actions,
+          bottom: bottom,
         ),
         body: body);
   }
