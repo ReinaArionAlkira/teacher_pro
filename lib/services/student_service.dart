@@ -1,4 +1,5 @@
 import 'package:isar/isar.dart';
+import 'package:teacher_pro/services/entities/grade.dart';
 import 'package:teacher_pro/services/isar_service.dart';
 
 import 'entities/lesson.dart';
@@ -53,10 +54,19 @@ class StudentService {
     await isar.writeTxn<void>(() async {
       student.lessons.remove(lesson);
       await student.lessons.save();
+      await isar.grades
+          .filter()
+          .student((q) => q.registerNoEqualTo(student.registerNo))
+          .lesson((q) => q.idEqualTo(lesson.id))
+          .deleteAll();
     });
   }
 
   Future<void> deleteStudent(Student record) async {
     await isar.writeTxn(() => isar.students.delete(record.registerNo!));
+    await isar.grades
+        .filter()
+        .student((q) => q.registerNoEqualTo(record.registerNo))
+        .deleteAll();
   }
 }

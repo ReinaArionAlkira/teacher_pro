@@ -87,22 +87,20 @@ class _EditStudentWidgetState extends State<EditStudentWidget> {
                   ? [
                       TextFieldWidget(
                         editable: false,
-                        value: student.name,
+                        value: 'Students name: ${student.name}',
                         text: 'Name',
-                        onSaved: (val) => name = val ?? "",
                       ),
                       TextFieldWidget(
                         editable: false,
-                        value: student.surrname,
+                        value: 'Students surrname: ${student.surrname}',
                         text: 'Surrname',
-                        onSaved: (val) => surrname = val ?? "",
                       ),
                       TextFieldWidget(
-                          editable: false,
-                          value: student.registerNo.toString(),
-                          text: 'Register Number',
-                          onSaved: (val) => registerNo = int.parse(val ?? "0"),
-                          type: TextInputType.number),
+                        editable: false,
+                        value:
+                            'Students register number: ${student.registerNo.toString()}',
+                        text: 'Register Number',
+                      ),
                       FutureBuilder(
                           future: gradeService
                               .getCountGradesForStudent(student.registerNo!),

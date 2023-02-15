@@ -87,7 +87,7 @@ class _HomePageState extends State<HomePage> {
                         readOnly: true,
                         controller: TextEditingController(
                             text:
-                                "A d d   s o m e   r e c o r d s   t o   l i s t "))),
+                                "A d d   s o m e   r e c o r d s   t o   l i s t"))),
                 IconButton(
                   icon: const Icon(Icons.add),
                   onPressed: () {

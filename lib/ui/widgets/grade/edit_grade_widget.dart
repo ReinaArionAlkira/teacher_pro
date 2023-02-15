@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:teacher_pro/ui/widgets/details_layout_widget.dart';
 import 'package:teacher_pro/ui/widgets/edit_widget.dart';
 import 'package:teacher_pro/ui/widgets/text_field_widget.dart';
+import 'package:teacher_pro/utils/time_range_convert.dart';
 import '../../../services/entities/grade.dart';
 import '../../../services/entities/lesson.dart';
 import '../../../services/entities/student.dart';
@@ -108,30 +109,35 @@ class _EditGradeWidgetState extends State<EditGradeWidget> {
               ? [
                   TextFieldWidget(
                       editable: false,
-                      value: grade.grade.toString(),
+                      value: 'Grade: ${grade.grade.toString()}',
                       text: 'Grade',
                       type: const TextInputType.numberWithOptions()),
-                  ListTile(
-                    title: TextFieldWidget(
-                        editable: false,
-                        value: grade.lesson.toString(),
-                        text: 'Lesson'),
-                    subtitle: TextFieldWidget(
-                        editable: false,
-                        value: grade.lesson.value!.day,
-                        text: 'Day: '),
-                  ),
                   TextFieldWidget(
                       editable: false,
-                      value: grade.student.value!.name,
+                      value: 'Lesson: ${grade.lesson.value!.name}',
+                      text: 'Lesson'),
+                  TextFieldWidget(
+                      editable: false,
+                      value: 'Day: ${grade.lesson.value!.day}',
+                      text: 'Day of lesson: '),
+                  TextFieldWidget(
+                      editable: false,
+                      value:
+                          'Hours of lesson: ${minutesToTimeOfDay(grade.lesson.value!.fromTime!).format(context)} - ${minutesToTimeOfDay(grade.lesson.value!.toTime!).format(context)}',
+                      text: 'Day: '),
+                  TextFieldWidget(
+                      editable: false,
+                      value: 'Students name: ${grade.student.value!.name}',
                       text: 'Name'),
                   TextFieldWidget(
                       editable: false,
-                      value: grade.student.value!.surrname,
+                      value:
+                          'Students surrname: ${grade.student.value!.surrname}',
                       text: 'Surrname'),
                   TextFieldWidget(
                       editable: false,
-                      value: grade.student.value!.registerNo.toString(),
+                      value:
+                          'Students Register number: ${grade.student.value!.registerNo.toString()}',
                       text: 'Register Number',
                       type: TextInputType.number),
                 ]

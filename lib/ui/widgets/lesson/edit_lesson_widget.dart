@@ -116,20 +116,18 @@ class _EditLessonWidgetState extends State<EditLessonWidget> {
                   ? [
                       TextFieldWidget(
                         editable: false,
-                        value: lesson.name,
+                        value: 'Name: ${lesson.name}',
                         text: 'Name',
-                        onSaved: (val) => name = val ?? "",
                       ),
                       TextFieldWidget(
                         editable: false,
-                        value: lesson.day,
+                        value: 'Day of lesson: ${lesson.day}',
                         text: 'Day',
-                        onSaved: (val) => day = val ?? "",
                       ),
                       TextFieldWidget(
                         editable: false,
                         value:
-                            '${minutesToTimeOfDay(lesson.fromTime!).format(context)} - ${minutesToTimeOfDay(lesson.toTime!).format(context)}',
+                            'Hours of lesson: ${minutesToTimeOfDay(lesson.fromTime!).format(context)} - ${minutesToTimeOfDay(lesson.toTime!).format(context)}',
                         text: 'TimeRange',
                       ),
                       FutureBuilder(
@@ -219,7 +217,7 @@ class _EditLessonWidgetState extends State<EditLessonWidget> {
             Column(
               children: [
                 DropDownMenuWidget(
-                    text: "Students",
+                    text: "Add students",
                     list: students,
                     onChanged: (value) => lessonService
                         .addStudentToLesson(lesson, value!)

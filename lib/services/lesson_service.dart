@@ -1,4 +1,5 @@
 import 'package:isar/isar.dart';
+import 'package:teacher_pro/services/entities/grade.dart';
 import 'package:teacher_pro/services/entities/lesson.dart';
 import 'package:teacher_pro/services/entities/student.dart';
 import 'isar_service.dart';
@@ -70,6 +71,10 @@ class LessonService {
       await lesson.students.save();
       student.lessons.remove(lesson);
       await student.lessons.save();
+      await isar.grades
+          .filter()
+          .lesson((q) => q.idEqualTo(lesson.id))
+          .deleteAll();
     });
   }
 
