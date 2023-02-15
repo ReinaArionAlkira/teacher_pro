@@ -70,6 +70,7 @@ class _AddGradeWidgetState extends State<AddGradeWidget> {
                 .then((students) => setState(() {
                       lesson = value;
                       this.students = students;
+                      student = null;
                     })),
           ),
           DropDownMenuWidget(
