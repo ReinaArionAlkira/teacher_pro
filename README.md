@@ -1,15 +1,33 @@
 # teacher_pro
 
-A new Flutter project.
+A Flutter project for studies.
+
+
+Now is being developed and fixed.
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+This project is designed to help the teacher manage their lessons, 
+students in those lessons and their grades.
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+### Running code
+
+
+Simply:
+
+
+flutter get
+flutter run
+
+
+### TODO
+
+- Filters
+- Searching
+- Downloading  (maybe to PDF):
+    - grades from student from lesson
+    - all grades from all students from lesson
 
 For help getting started with Flutter development, view the
 [online documentation](https://docs.flutter.dev/), which offers tutorials,
