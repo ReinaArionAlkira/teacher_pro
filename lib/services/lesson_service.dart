@@ -56,12 +56,16 @@ class LessonService {
   }
 
   Future<void> editLesson(int id, Lesson editLesson) async {
-    await isar.writeTxn<int>(() async {
-      editLesson.id = id;
+    final editing = await isar.lessons.get(id);
+    await isar.writeTxn(() async {
+      editing!
+        ..day = editLesson.day
+        ..fromTime = editLesson.fromTime
+        ..toTime = editLesson.toTime;
       await isar.lessons.put(editLesson);
       await editLesson.grades.save();
       await editLesson.students.save();
-      return editLesson.id;
+      // return editLesson.id;
     });
   }
 

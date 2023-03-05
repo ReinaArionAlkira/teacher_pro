@@ -54,15 +54,13 @@ class _EditLessonWidgetState extends State<EditLessonWidget> {
   bool get editable => mode == Mode.edit;
 
   Future<void> applyDraft() async {
-    await lessonService.editLesson(widget.lesson.id, lessonDraft);
     setState(() {
-      lesson.name = lessonDraft.name;
-      lesson.day = lessonDraft.day;
-      lesson.fromTime = lessonDraft.fromTime;
-      lesson.toTime = lessonDraft.toTime;
+      lesson.name = lessonDraft.name ?? lesson.name;
+      lesson.day = lessonDraft.day ?? lesson.day;
+      lesson.fromTime = lessonDraft.fromTime ?? lesson.fromTime;
+      lesson.toTime = lessonDraft.toTime ?? lesson.toTime;
     });
-    //     ..fromTime = timeOfDayToMinutes(timeRange!.startTime)
-    //     ..toTime = timeOfDayToMinutes(timeRange!.endTime),
+    await lessonService.editLesson(widget.lesson.id, lesson);
   }
 
   String? day;
@@ -116,7 +114,7 @@ class _EditLessonWidgetState extends State<EditLessonWidget> {
                   ? [
                       TextFieldWidget(
                         editable: false,
-                        value: 'Name: ${lesson.name}',
+                        value: '${lesson.name}',
                         text: 'Name',
                       ),
                       TextFieldWidget(
@@ -144,7 +142,8 @@ class _EditLessonWidgetState extends State<EditLessonWidget> {
                     ]
                   : [
                       TextFieldWidget(
-                        onChange: (value) => setState(() => name = value!),
+                        onChange: (value) =>
+                            setState(() => lessonDraft.name = value!),
                         type: TextInputType.text,
                         text: 'Name',
                       ),
@@ -161,7 +160,8 @@ class _EditLessonWidgetState extends State<EditLessonWidget> {
                                   child: Text(e),
                                 ))
                             .toList(),
-                        onChanged: (value) => setState(() => day = value),
+                        onChanged: (value) =>
+                            setState(() => lessonDraft.day = value),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter some data';
@@ -170,6 +170,12 @@ class _EditLessonWidgetState extends State<EditLessonWidget> {
                         },
                       ),
                       TextFormField(
+                          onChanged: (value) => setState(() {
+                                lessonDraft.fromTime =
+                                    timeOfDayToMinutes(timeRange!.startTime);
+                                lessonDraft.toTime =
+                                    timeOfDayToMinutes(timeRange!.endTime);
+                              }),
                           onTap: () async {
                             TimeRange result = await showTimeRangePicker(
                                 context: context,
