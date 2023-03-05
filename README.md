@@ -18,6 +18,8 @@ Simply:
 
 
 flutter get
+
+
 flutter run
 
 
