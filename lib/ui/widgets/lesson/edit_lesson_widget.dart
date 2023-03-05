@@ -40,9 +40,9 @@ class _EditLessonWidgetState extends State<EditLessonWidget> {
 
   Future<void> init() async {
     lesson = widget.lesson;
-    final students = await studentService.getAllStudents().first;
+    final studentList = await studentService.getAllStudents().first;
     setState(() {
-      this.students = students;
+      students = studentList;
     });
   }
 
@@ -114,18 +114,18 @@ class _EditLessonWidgetState extends State<EditLessonWidget> {
                   ? [
                       TextFieldWidget(
                         editable: false,
-                        value: '${lesson.name}',
+                        value: lesson.name,
                         text: 'Name',
                       ),
                       TextFieldWidget(
                         editable: false,
-                        value: 'Day of lesson: ${lesson.day}',
+                        value: lesson.day,
                         text: 'Day',
                       ),
                       TextFieldWidget(
                         editable: false,
                         value:
-                            'Hours of lesson: ${minutesToTimeOfDay(lesson.fromTime!).format(context)} - ${minutesToTimeOfDay(lesson.toTime!).format(context)}',
+                            '${minutesToTimeOfDay(lesson.fromTime!).format(context)} - ${minutesToTimeOfDay(lesson.toTime!).format(context)}',
                         text: 'TimeRange',
                       ),
                       FutureBuilder(
@@ -135,20 +135,22 @@ class _EditLessonWidgetState extends State<EditLessonWidget> {
                               AsyncSnapshot<int> snapshot) {
                             return TextFieldWidget(
                                 editable: false,
-                                value:
-                                    'Number of students: ${snapshot.hasData ? snapshot.data : "0"}',
+                                value: snapshot.hasData
+                                    ? snapshot.data.toString()
+                                    : "0",
                                 text: 'Number of students');
                           }),
                     ]
                   : [
                       TextFieldWidget(
+                        value: lesson.name,
                         onChange: (value) =>
                             setState(() => lessonDraft.name = value!),
                         type: TextInputType.text,
                         text: 'Name',
                       ),
                       DropdownButtonFormField(
-                        value: day,
+                        value: lesson.day,
                         decoration: const InputDecoration(
                           border: OutlineInputBorder(),
                         ),
@@ -170,12 +172,6 @@ class _EditLessonWidgetState extends State<EditLessonWidget> {
                         },
                       ),
                       TextFormField(
-                          onChanged: (value) => setState(() {
-                                lessonDraft.fromTime =
-                                    timeOfDayToMinutes(timeRange!.startTime);
-                                lessonDraft.toTime =
-                                    timeOfDayToMinutes(timeRange!.endTime);
-                              }),
                           onTap: () async {
                             TimeRange result = await showTimeRangePicker(
                                 context: context,
@@ -204,6 +200,10 @@ class _EditLessonWidgetState extends State<EditLessonWidget> {
                                 }).toList());
                             setState(() {
                               timeRange = result;
+                              lessonDraft.fromTime =
+                                  timeOfDayToMinutes(timeRange!.startTime);
+                              lessonDraft.toTime =
+                                  timeOfDayToMinutes(timeRange!.endTime);
                             });
                           },
                           readOnly: true,
@@ -216,7 +216,7 @@ class _EditLessonWidgetState extends State<EditLessonWidget> {
                           decoration: InputDecoration(
                               border: const OutlineInputBorder(),
                               hintText: timeRange == null
-                                  ? "Select time range"
+                                  ? "${minutesToTimeOfDay(lesson.fromTime!).format(context)} - ${minutesToTimeOfDay(lesson.toTime!).format(context)}"
                                   : "${timeRange!.startTime.format(context)} - ${timeRange!.endTime.format(context)}"))
                     ],
             ),

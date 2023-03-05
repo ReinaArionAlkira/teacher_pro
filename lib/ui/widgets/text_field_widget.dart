@@ -70,6 +70,7 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
       controller: TextEditingController(text: value)
         ..selection = TextSelection.collapsed(offset: value.length),
       decoration: InputDecoration(
+        labelText: widget.text,
         border: const OutlineInputBorder(),
         hintText: widget.text,
       ),
