@@ -61,33 +61,32 @@ class _HomePageState extends State<HomePage> {
               mainAxisAlignment: MainAxisAlignment.end,
               mainAxisSize: MainAxisSize.max,
               children: [
-                // const Expanded(
-                //   child:
-                //   TextField(
-                //       style: TextStyle(fontSize: 20),
-                //       textAlign: TextAlign.justify,
-                //       maxLines: 1,
-                //       decoration: InputDecoration(
-                //         contentPadding: EdgeInsets.all(10.0),
-                //         border: OutlineInputBorder(),
-                //         hintText: 'Search',
-                //       )),
-                // ),
-                // IconButton(
-                //   icon: const Icon(Icons.search),
-                //   onPressed: () {},
-                // ),
-                Expanded(
-                    child: TextFormField(
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(fontWeight: FontWeight.bold),
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                        ),
-                        readOnly: true,
-                        controller: TextEditingController(
-                            text:
-                                "A d d   s o m e   r e c o r d s   t o   l i s t"))),
+                const Expanded(
+                  child: TextField(
+                      style: TextStyle(fontSize: 20),
+                      textAlign: TextAlign.justify,
+                      maxLines: 1,
+                      decoration: InputDecoration(
+                        contentPadding: EdgeInsets.all(10.0),
+                        border: OutlineInputBorder(),
+                        hintText: 'Search',
+                      )),
+                ),
+                IconButton(
+                  icon: const Icon(Icons.search),
+                  onPressed: () {},
+                ),
+                // Expanded(
+                //     child: TextFormField(
+                //         textAlign: TextAlign.center,
+                //         style: const TextStyle(fontWeight: FontWeight.bold),
+                //         decoration: const InputDecoration(
+                //           border: InputBorder.none,
+                //         ),
+                //         readOnly: true,
+                //         controller: TextEditingController(
+                //             text:
+                //                 "A d d   s o m e   r e c o r d s   t o   l i s t"))),
                 IconButton(
                   icon: const Icon(Icons.add),
                   onPressed: () {
@@ -101,6 +100,8 @@ class _HomePageState extends State<HomePage> {
           height: 2,
           color: Theme.of(context).primaryColor,
         ),
+        //TODO:
+        DropdownButton(items: items, onChanged: onChanged),
         widgetOptions.elementAt(_selectedIndex),
       ]),
       bottomNavigationBar: BottomNavigationBar(
